@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mark O'Brien — Founder, CTO, Author &amp; CX Strategist</title>
+  <meta name="description" content="Mark O'Brien helps Creatives execute and Executives create — founder, CTO, author, and customer experience strategist based in Cleveland, Ohio." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:      #0A0A0A;
+      --near-black: #111111;
+      --surface:    #161616;
+      --border:     #2A2A2A;
+      --mid:        #6B6B6B;
+      --light:      #B8B8B8;
+      --white:      #F4F4F4;
+      --orange:     #FF6B35;
+      --orange-dim: rgba(255, 107, 53, 0.10);
+
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body:    'Inter', sans-serif;
+
+      --max-w: 1100px;
+      --pad-x: clamp(1.25rem, 5vw, 3rem);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a   { color: inherit; text-decoration: none; }
+
+    /* ─── Utility ──────────────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--pad-x);
+    }
+
+    .orange-line {
+      display: block;
+      width: 48px;
+      height: 3px;
+      background: var(--orange);
+      border-radius: 2px;
+      margin-bottom: 1.75rem;
+    }
+
+    .label {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.75rem;
+    }
+
+    /* ─── Scroll-reveal ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.65s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible        { opacity: 1; transform: none; }
+    .reveal-delay-1        { transition-delay: 0.10s; }
+    .reveal-delay-2        { transition-delay: 0.20s; }
+    .reveal-delay-3        { transition-delay: 0.32s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ─── Nav ──────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.1rem var(--pad-x);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      color: var(--white);
+    }
+    .nav-logo span { color: var(--orange); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--light);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.5rem 1.1rem;
+      border: 1.5px solid var(--orange);
+      color: var(--orange);
+      border-radius: 4px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-cta:hover { background: var(--orange); color: var(--black); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: var(--black);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--orange); }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* ─── Hero ─────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: clamp(3rem, 8vw, 6rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(8rem, 28vw, 22rem);
+      line-height: 0.9;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.045);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 1.5px;
+      background: var(--orange);
+    }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(3rem, 10vw, 7.5rem);
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .hero-name em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--white);
+    }
+
+    .hero-desc {
+      max-width: 580px;
+      font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+      color: var(--light);
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+    .hero-desc strong { color: var(--white); font-weight: 600; }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn-primary {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.85rem 1.75rem;
+      background: var(--orange);
+      color: var(--black);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: #ff8255; transform: translateY(-1px); }
+
+    .btn-ghost {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.85rem 1.75rem;
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--white); transform: translateY(-1px); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      right: var(--pad-x);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+      writing-mode: vertical-rl;
+      cursor: pointer;
+    }
+    .hero-scroll::after {
+      content: '';
+      display: block;
+      width: 1.5px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--mid), transparent);
+      margin-top: 0.5rem;
+    }
+    @media (max-width: 480px) { .hero-scroll { display: none; } }
+
+    /* ─── Section base ─────────────────────────────────────────── */
+    section { padding: clamp(4rem, 10vw, 8rem) 0; }
+
+    .section-head { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      color: var(--white);
+    }
+    .section-title span { color: var(--orange); }
+
+    /* ─── About ────────────────────────────────────────────────── */
+    #about { background: var(--near-black); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    @media (min-width: 860px) {
+      .about-grid { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    }
+
+    .about-portrait { position: relative; }
+
+    .about-portrait-img {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      object-position: center top;
+      filter: grayscale(100%) contrast(1.05);
+      border-radius: 2px;
+      display: block;
+    }
+
+    .about-portrait-placeholder {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 4/5;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.5rem;
+      color: var(--mid);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+    }
+    .about-portrait-placeholder svg { opacity: 0.3; }
+
+    .portrait-note {
+      margin-top: 0.75rem;
+      font-size: 0.72rem;
+      color: var(--mid);
+      line-height: 1.5;
+      max-width: 420px;
+    }
+
+    .portrait-accent {
+      position: absolute;
+      bottom: -12px;
+      right: -12px;
+      width: 80px;
+      height: 80px;
+      border: 2px solid var(--orange);
+      border-radius: 2px;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @media (max-width: 480px) { .portrait-accent { display: none; } }
+
+    .about-body p {
+      font-size: 1.05rem;
+      color: var(--light);
+      line-height: 1.75;
+      margin-bottom: 1.25rem;
+    }
+    .about-body p:last-of-type { margin-bottom: 2rem; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-num span { color: var(--orange); }
+    .stat-label { font-size: 0.75rem; color: var(--mid); letter-spacing: 0.04em; }
+
+    /* ─── Experience ───────────────────────────────────────────── */
+    #experience { background: var(--black); }
+
+    .exp-list { display: flex; flex-direction: column; }
+
+    .exp-item {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      position: relative;
+    }
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: -1.5rem;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: var(--orange);
+      transform: scaleY(0);
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+    }
+    .exp-item:hover::before { transform: scaleY(1); }
+
+    @media (min-width: 640px) {
+      .exp-item { grid-template-columns: 175px 1fr; gap: 2rem; }
+    }
+
+    .exp-meta  { display: flex; flex-direction: column; gap: 0.25rem; }
+    .exp-year  {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--orange);
+      text-transform: uppercase;
+    }
+    .exp-org { font-size: 0.82rem; color: var(--mid); line-height: 1.4; }
+
+    .exp-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+    .exp-desc { font-size: 0.9rem; color: var(--light); line-height: 1.65; }
+
+    /* ─── Work / Projects ──────────────────────────────────────── */
+    #work { background: var(--near-black); }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    @media (min-width: 640px)  { .work-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px)  { .work-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .work-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.75rem;
+      transition: border-color 0.25s, transform 0.25s;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .work-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .work-card:hover { border-color: #3a3a3a; transform: translateY(-4px); }
+    .work-card:hover::after { transform: scaleX(1); }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--orange-dim);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-icon svg {
+      width: 20px; height: 20px;
+      stroke: var(--orange); fill: none; stroke-width: 1.8;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+    .card-desc { font-size: 0.875rem; color: var(--light); line-height: 1.65; flex: 1; }
+    .card-link {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--orange);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: auto;
+      transition: gap 0.2s;
+    }
+    .card-link:hover { gap: 0.7rem; }
+    .card-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+
+    /* ─── Specialties ──────────────────────────────────────────── */
+    #specialties { background: var(--black); }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    @media (min-width: 640px)  { .spec-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 960px)  { .spec-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .spec-item {
+      background: var(--near-black);
+      padding: 1.5rem 1.25rem;
+      transition: background 0.2s;
+    }
+    .spec-item:hover { background: var(--surface); }
+    .spec-dot {
+      width: 6px; height: 6px;
+      background: var(--orange);
+      border-radius: 50%;
+      margin-bottom: 0.75rem;
+    }
+    .spec-name {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    /* ─── Passion ──────────────────────────────────────────────── */
+    #passion { background: var(--near-black); }
+
+    .passion-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    @media (min-width: 860px) {
+      .passion-inner { grid-template-columns: 1fr 1fr; gap: 4rem; }
+    }
+
+    .passion-block h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .passion-block p {
+      font-size: 0.95rem;
+      color: var(--light);
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+
+    .pill-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+    .pill {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 0.35rem 0.85rem;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      color: var(--light);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .pill:hover { border-color: var(--white); color: var(--white); }
+
+    /* ─── Closing ghost bookend ────────────────────────────────── */
+    #bookend {
+      background: var(--black);
+      padding: clamp(4rem, 8vw, 7rem) 0;
+      overflow: hidden;
+      position: relative;
+      border-top: 1px solid var(--border);
+    }
+    .bookend-ghost {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(5rem, 18vw, 14rem);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.06);
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      text-align: center;
+      display: block;
+    }
+    .bookend-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      text-align: center;
+      padding: 0 var(--pad-x);
+    }
+    .bookend-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    .bookend-line {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 3vw, 1.7rem);
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    /* Only show the orange accent on the period */
+    .bookend-line span { color: var(--orange); }
+
+    /* ─── Contact ──────────────────────────────────────────────── */
+    #contact {
+      background: var(--near-black);
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    @media (min-width: 860px) {
+      .contact-inner { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    }
+
+    .contact-headline {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      color: var(--white);
+      margin-bottom: 1.25rem;
+    }
+    .contact-sub { font-size: 0.95rem; color: var(--light); line-height: 1.7; margin-bottom: 2rem; }
+
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: border-color 0.25s, transform 0.2s;
+    }
+    .contact-link:hover { border-color: var(--border); transform: translateX(4px); }
+    .contact-link-icon {
+      width: 36px; height: 36px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-link-icon svg { width: 18px; height: 18px; stroke: var(--light); fill: none; stroke-width: 1.8; }
+    .contact-link-text { display: flex; flex-direction: column; gap: 0.15rem; }
+    .contact-link-label { font-size: 0.72rem; color: var(--mid); letter-spacing: 0.08em; text-transform: uppercase; }
+    .contact-link-val { font-size: 0.9rem; font-weight: 500; color: var(--white); }
+
+    /* ─── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 2rem var(--pad-x);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .footer-logo span { color: var(--orange); }
+    .footer-copy { font-size: 0.75rem; color: var(--mid); }
+  </style>
+</head>
+<body>
+
+<!-- ─── Nav ──────────────────────────────────────────────────────── -->
+<nav id="nav">
+  <a class="nav-logo" href="#hero">Mark<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#specialties">Specialties</a></li>
+    <li><a href="#passion">Speaking</a></li>
+  </ul>
+  <a class="nav-cta" href="#contact">Let's Connect</a>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about"       class="mm-link">About</a>
+  <a href="#experience"  class="mm-link">Experience</a>
+  <a href="#work"        class="mm-link">Work</a>
+  <a href="#specialties" class="mm-link">Specialties</a>
+  <a href="#passion"     class="mm-link">Speaking</a>
+  <a href="#contact"     class="mm-link" style="color:var(--orange)">Let's Connect</a>
+</div>
+
+<!-- ─── Hero ──────────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg-text">MARK</div>
+  <div class="container">
+    <p class="hero-eyebrow reveal">Founder · CTO · Author · Strategist</p>
+    <h1 class="hero-name reveal reveal-delay-1">
+      Mark<br><em>O'Brien</em>
+    </h1>
+    <p class="hero-desc reveal reveal-delay-2">
+      Helping <strong>Creatives execute</strong> and <strong>Executives create</strong> —
+      building human-centered digital experiences that connect people to what matters most.
+    </p>
+    <div class="hero-actions reveal reveal-delay-3">
+      <a class="btn-primary" href="#work">See My Work</a>
+      <a class="btn-ghost"   href="#contact">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-scroll" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Scroll</div>
+</section>
+
+<!-- ─── About ─────────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+
+      <div class="about-portrait reveal">
+        <!--
+          TO ADD YOUR PHOTO:
+          1. Save your image as "photo.jpg" in the same folder as this file
+          2. Replace the placeholder div below with:
+             <img class="about-portrait-img" src="photo.jpg" alt="Mark O'Brien" />
+
+          Google Drive direct-link workaround:
+          From the share URL: https://drive.google.com/file/d/12XPnUv-xIl8VQT13LplrmeGEtGtynj1Q/view
+          Use: https://drive.google.com/uc?export=view&id=12XPnUv-xIl8VQT13LplrmeGEtGtynj1Q
+          (Note: Drive direct links can be blocked by CORS — hosting the file locally is most reliable)
+        -->
+        <img
+          class="about-portrait-img"
+          src="photo.jpg"
+          alt="Mark O'Brien"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        />
+        <div class="about-portrait-placeholder" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <span>Add photo.jpg to your repo</span>
+        </div>
+        <p class="portrait-note">If the photo doesn't appear, add <code>photo.jpg</code> to your GitHub repo and update the <code>src</code> attribute.</p>
+        <div class="portrait-accent"></div>
+      </div>
+
+      <div class="about-body">
+        <div class="section-head reveal reveal-delay-1">
+          <p class="label">About Me</p>
+          <h2 class="section-title">Where <span>technology</span><br>meets purpose.</h2>
+        </div>
+
+        <p class="reveal reveal-delay-2">
+          I'm Mark O'Brien, <strong style="color:var(--white)">Director of Customer Technology and Product Innovation</strong>
+          at The Cleveland Foundation — one of the world's first and largest community foundations.
+          My work sits at the intersection of organizational strategy, digital products, and financial
+          expertise that promote human flourishing.
+        </p>
+        <p class="reveal reveal-delay-2">
+          Beyond the foundation, I run <strong style="color:var(--white)">Customer X Lab</strong>,
+          a consulting practice dedicated to helping organizations reimagine their customer experience
+          from the inside out. I'm also the author of
+          <em style="color:var(--white)">Fueling Customer Delight</em> — a practical guide to building
+          cultures where extraordinary service isn't the exception, it's the standard — along with
+          four additional ebooks exploring CX, leadership, and growth.
+        </p>
+        <p class="reveal reveal-delay-3">
+          I believe the best technology is invisible. It quietly removes friction, amplifies human
+          connection, and makes complex things feel simple. That conviction drives everything I build.
+        </p>
+
+        <div class="about-stats reveal reveal-delay-3">
+          <div class="stat-item">
+            <div class="stat-num">10<span>+</span></div>
+            <div class="stat-label">Years in CX &amp; Tech</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">1<span>+</span></div>
+            <div class="stat-label">Book Published</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">4</div>
+            <div class="stat-label">eBooks Authored</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── Experience ────────────────────────────────────────────────── -->
+<section id="experience">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="label">Career</p>
+      <h2 class="section-title">Experience &amp;<br><span>Background</span></h2>
+    </div>
+
+    <div class="exp-list">
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <span class="exp-year">Current</span>
+          <span class="exp-org">The Cleveland Foundation<br>Cleveland, OH</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-title">Director, Customer Technology &amp; Product Innovation</div>
+          <div class="exp-desc">Leading digital product strategy and technical architecture for one of the world's largest community foundations. Overseeing donor portal development, CRM platforms (Salesforce), ERP integration (Ren iPhi), and a suite of digital tools that connect philanthropic intent to lasting community impact.</div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal reveal-delay-1">
+        <div class="exp-meta">
+          <span class="exp-year">Ongoing</span>
+          <span class="exp-org">Customer X Lab</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-title">Founder &amp; Principal Consultant</div>
+          <div class="exp-desc">Independent CX consulting practice helping companies transform the way they design and deliver customer experiences. Services span strategy engagements, half-day and full-day CX workshops, keynote speaking, and executive advisory. Author of <em>Fueling Customer Delight</em> and four additional ebooks on CX and leadership.</div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal reveal-delay-2">
+        <div class="exp-meta">
+          <span class="exp-year">Prior</span>
+          <span class="exp-org">Good Place Holdings</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-title">Chief Technology Officer</div>
+          <div class="exp-desc">Served as CTO for Good Place Holdings, overseeing technology strategy, platform architecture, and digital product development across the organization's portfolio. Led a team focused on building scalable systems aligned with the company's mission and growth objectives.</div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal reveal-delay-1">
+        <div class="exp-meta">
+          <span class="exp-year">Prior</span>
+          <span class="exp-org">On Now Digital</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-title">General Manager — Software Startup</div>
+          <div class="exp-desc">Joined On Now Digital as General Manager, leading day-to-day operations, product direction, and go-to-market strategy for the software startup. Worked closely with the founding team to scale the business, refine the product-market fit, and build a culture of customer-first thinking.</div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal reveal-delay-2">
+        <div class="exp-meta">
+          <span class="exp-year">Prior</span>
+          <span class="exp-org">SDMyers</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-title">Digital Product Manager</div>
+          <div class="exp-desc">Managed digital product development and customer-facing technology at SDMyers, a specialty industrial services firm. Drove improvements to digital tools and customer experience platforms, bridging technical teams with business stakeholders to deliver measurable outcomes.</div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal reveal-delay-3">
+        <div class="exp-meta">
+          <span class="exp-year">Early Career</span>
+          <span class="exp-org">Entrepreneurial Ventures</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-title">Founder — Two Ventures</div>
+          <div class="exp-desc">Founded two entrepreneurial businesses in his early twenties — learning firsthand the discipline of building from zero, earning customer trust without a brand safety net, and designing operations that survive reality. These experiences planted the seeds of a business philosophy rooted in value creation and service to others.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── Work / Projects ───────────────────────────────────────────── -->
+<section id="work">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="label">Selected Work</p>
+      <h2 class="section-title">Projects &amp;<br><span>Passions</span></h2>
+    </div>
+
+    <div class="work-grid">
+
+      <div class="work-card reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <div class="card-title">Fueling Customer Delight</div>
+        <div class="card-desc">A practical blueprint for building organizations where exceptional customer experiences are systematic, not accidental. Written for leaders who believe culture and service are inseparable — available now on Amazon.</div>
+        <a class="card-link" href="https://www.amazon.com/Fueling-Customer-Delight-crafting-interactions/dp/B0F2N4VP6K/" target="_blank" rel="noopener">
+          Get the Book
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <div class="work-card reveal reveal-delay-1">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><circle cx="17" cy="8" r="2"/><path d="M17 10v2"/></svg>
+        </div>
+        <div class="card-title">AI-Native Apps &amp; Customer Portals</div>
+        <div class="card-desc">Rapid-prototyped a suite of AI-native customer experiences — from donor portals and interactive calculators to onboarding flows and sentiment-testing micro-apps. Each one built to answer a real question fast: Does this resonate? Will people use it? What do they actually need?</div>
+        <a class="card-link" href="#contact">
+          Start a Conversation
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <div class="work-card reveal reveal-delay-2">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="card-title">Customer X Lab</div>
+        <div class="card-desc">Consulting, speaking, and workshop practice built on the belief that customer experience is your most defensible competitive advantage. Offerings include half-day and full-day CX workshops, executive advisory, and keynote presentations — grounded in real-world practice, not theory.</div>
+        <a class="card-link" href="https://www.customerxlab.net" target="_blank" rel="noopener">
+          Visit the Lab
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <div class="work-card reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="card-title">StoryBrand &amp; Creative Campaigns</div>
+        <div class="card-desc">Designing marketing campaigns that lead with empathy — built on the StoryBrand framework to emotionally connect with audiences before asking anything of them. From paid social micro-apps to cinematic scroll experiences, the goal is always the same: make the audience the hero.</div>
+        <a class="card-link" href="#contact">
+          Let's Collaborate
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <div class="work-card reveal reveal-delay-1">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="card-title">Workshops, Keynotes &amp; Panels</div>
+        <div class="card-desc">Available for keynotes, interactive workshops, and panels on customer experience, design thinking, innovation, and organizational lifecycles. Sessions are energetic, practical, and grounded in real examples from the field — not frameworks that live only on whiteboards.</div>
+        <a class="card-link" href="#contact">
+          Book Mark
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <div class="work-card reveal reveal-delay-2">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        </div>
+        <div class="card-title">Rapid Prototyping with AI</div>
+        <div class="card-desc">Designing and building polished, deployable prototypes — calculators, process diagrams, interactive tools, and PWA concepts — accelerated by AI and shipped fast. If you can imagine it, it can be prototyped, validated, and iterated before the meeting ends.</div>
+        <a class="card-link" href="#contact">
+          Start a Project
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── Specialties ───────────────────────────────────────────────── -->
+<section id="specialties">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="label">Expertise</p>
+      <h2 class="section-title">Areas of<br><span>Specialization</span></h2>
+    </div>
+
+    <div class="spec-grid">
+      <div class="spec-item reveal"              ><div class="spec-dot"></div><div class="spec-name">Customer Experience Strategy</div></div>
+      <div class="spec-item reveal reveal-delay-1"><div class="spec-dot"></div><div class="spec-name">Digital Product Management</div></div>
+      <div class="spec-item reveal reveal-delay-2"><div class="spec-dot"></div><div class="spec-name">Salesforce Architecture</div></div>
+      <div class="spec-item reveal reveal-delay-3"><div class="spec-dot"></div><div class="spec-name">Organizational Strategy</div></div>
+      <div class="spec-item reveal"              ><div class="spec-dot"></div><div class="spec-name">Customer Nurturing Design</div></div>
+      <div class="spec-item reveal reveal-delay-1"><div class="spec-dot"></div><div class="spec-name">CRM &amp; ERP Integration</div></div>
+      <div class="spec-item reveal reveal-delay-2"><div class="spec-dot"></div><div class="spec-name">UX &amp; Rapid Prototyping</div></div>
+      <div class="spec-item reveal reveal-delay-3"><div class="spec-dot"></div><div class="spec-name">Organizational Culture</div></div>
+      <div class="spec-item reveal"              ><div class="spec-dot"></div><div class="spec-name">Metric Selection &amp; KPI Design</div></div>
+      <div class="spec-item reveal reveal-delay-1"><div class="spec-dot"></div><div class="spec-name">Data &amp; Reporting Strategy</div></div>
+      <div class="spec-item reveal reveal-delay-2"><div class="spec-dot"></div><div class="spec-name">StoryBrand &amp; Creative Marketing</div></div>
+      <div class="spec-item reveal reveal-delay-3"><div class="spec-dot"></div><div class="spec-name">Author &amp; Public Speaker</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Passion / Philosophy ─────────────────────────────────────── -->
+<section id="passion">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="label">What Drives Me</p>
+      <h2 class="section-title">Passion &amp;<br><span>Philosophy</span></h2>
+    </div>
+
+    <div class="passion-inner">
+      <div class="passion-block reveal">
+        <h3>Technology in the Service of Humans</h3>
+        <p>I believe technology only earns its place when it makes someone's life genuinely better. Not more efficient for the business — better for the person. That distinction is everything. Empathy isn't a soft skill; it's the most precise diagnostic tool we have for uncovering what humans actually need — before they can articulate it themselves.</p>
+        <p>I believe our work should build up ourselves and others — that commerce and community aren't in tension, they're in service of each other. Business is one of the most powerful vehicles for human flourishing we've ever invented, and when we use it that way — with intention, with empathy, and with others in mind — it has the power to make the world genuinely better.</p>
+        <div class="pill-list">
+          <span class="pill">Human-Centered Design</span>
+          <span class="pill">Triple Bottom Line</span>
+          <span class="pill">Empathy as Strategy</span>
+          <span class="pill">Systems Thinking</span>
+          <span class="pill">Radical Simplicity</span>
+        </div>
+      </div>
+
+      <div class="passion-block reveal reveal-delay-1">
+        <h3>Speaking Topics</h3>
+        <p>I speak at conferences, leadership retreats, and team offsites on the themes that define my work. Energetic, practical, and always grounded in real stories from the field.</p>
+        <div class="pill-list">
+          <span class="pill">Fueling Customer Delight</span>
+          <span class="pill">CX as Competitive Advantage</span>
+          <span class="pill">Design Thinking in Practice</span>
+          <span class="pill">Innovation &amp; Organizational Lifecycles</span>
+          <span class="pill">Building Culture at Scale</span>
+          <span class="pill">Technology for Good</span>
+          <span class="pill">Rapid Innovation and Scale</span>
+        </div>
+        <br>
+        <a class="btn-primary" href="#contact" style="display:inline-block">Inquire About Speaking</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Closing Bookend ───────────────────────────────────────────── -->
+<div id="bookend" class="reveal">
+  <span class="bookend-ghost">EXECUTE</span>
+  <div class="bookend-inner">
+    <p class="bookend-tag">The throughline</p>
+    <p class="bookend-line">Helping Creatives execute<br>and Executives create<span>.</span></p>
+  </div>
+</div>
+
+<!-- ─── Contact ───────────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="reveal">
+        <span class="orange-line"></span>
+        <h2 class="contact-headline">Let's build something worth talking about.</h2>
+        <p class="contact-sub">Whether you're exploring a speaking engagement, a consulting partnership, a workshop, or just want to connect — I'd love to hear from you.</p>
+        <a class="btn-primary" href="mailto:mob.j29@gmail.com">Send Me a Message</a>
+      </div>
+
+      <div class="contact-links reveal reveal-delay-1">
+        <a class="contact-link" href="https://www.customerxlab.net" target="_blank" rel="noopener">
+          <div class="contact-link-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="contact-link-text">
+            <span class="contact-link-label">Website</span>
+            <span class="contact-link-val">customerxlab.net</span>
+          </div>
+        </a>
+
+        <a class="contact-link" href="https://www.linkedin.com/in/mark-o-brien-customerexperience/" target="_blank" rel="noopener">
+          <div class="contact-link-icon">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </div>
+          <div class="contact-link-text">
+            <span class="contact-link-label">LinkedIn</span>
+            <span class="contact-link-val">Connect with Mark</span>
+          </div>
+        </a>
+
+        <a class="contact-link" href="mailto:mob.j29@gmail.com">
+          <div class="contact-link-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-link-text">
+            <span class="contact-link-label">Email</span>
+            <span class="contact-link-val">mob.j29@gmail.com</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-logo">Mark O'Brien<span>.</span></div>
+  <div class="footer-copy">&copy; <span id="yr"></span> Mark O'Brien. All rights reserved.</div>
+</footer>
+
+<!-- ─── Scripts ───────────────────────────────────────────────────── -->
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  /* Nav scroll state */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* Hamburger / mobile menu */
+  const hamburger   = document.getElementById('hamburger');
+  const mobileMenu  = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mm-link').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* Scroll-reveal via IntersectionObserver */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* Trigger hero reveals immediately on load */
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('visible'));
+    }, 120);
+  });
+</script>
+</body>
+</html>
